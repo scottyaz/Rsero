@@ -47,12 +47,21 @@ seroprevalence.plot<- function(serodata, age_class = 10, YLIM = 1, ...){
         plots[[index.plot]]= g
         plots[[index.plot]]$category  = cat
         
-        print(paste0('Category: ',cat))
+        if(serodata$Ncategory>1){
+          cat(sprintf('Category: %s \n',cat))
+        }
       }
     }
     
   }
-  return(plots)
+  
+  if(length(plots)>1){
+    rc <- plots
+  } else {
+    rc <- plots[[1]]
+  }
+
+    return(rc)
   
 }
 
@@ -77,6 +86,8 @@ sero.age.groups <- function(dat,age_class,YLIM){
       G[j,1]=B$lower
       G[j,2]=B$upper
       G[j,3]=B$mean
+    } else {
+      warning("not estimating mean and CI due to low sample size in a category")
     }
   }
   
